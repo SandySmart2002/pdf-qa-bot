@@ -1,3 +1,10 @@
+!pip install fastapi
+!pip install uvicorn
+!pip install pinecone-client
+!pip install cohere
+!pip install pypdf
+!pip install python-multipart
+
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import cohere
@@ -19,8 +26,8 @@ app.add_middleware(
 )
 
 # Initialize Pinecone and Cohere
-pinecone.init(api_key="YOUR_PINECONE_API_KEY", environment="us-west1-gcp")
-index = pinecone.Index("qa-bot-index")
+pinecone_client=pinecone.Pinecone(api_key="Pinecone_API KEY", environment="us-east-1")
+index = pinecone_client.Index("qa-bot-index")
 
 cohere_client = cohere.Client("YOUR_COHERE_API_KEY")
 
