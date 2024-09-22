@@ -1,0 +1,33 @@
+# Base image for FastAPI backend
+FROM python:3.9-slim as backend
+
+# Set working directory for backend
+WORKDIR /app
+
+# Copy backend code
+COPY backend/ /app/
+
+# Install dependencies for backend
+RUN pip install -r requirements.txt
+
+# Run FastAPI
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# Base image for Streamlit frontend
+FROM python:3.9-slim as frontend
+
+# Set working directory for frontend
+WORKDIR /app
+
+# Copy frontend code
+COPY frontend/ /app/
+
+# Install dependencies for frontend
+RUN pip install -r requirements.txt
+
+# Run Streamlit
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+
+# Combine both services
+FROM backend as final
+COPY --from=frontend /app /app
